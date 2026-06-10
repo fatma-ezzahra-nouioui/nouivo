@@ -1,0 +1,281 @@
+/* ─── Google Fonts ─────────────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Great+Vibes&family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+/* ─── Tailwind v4 ───────────────────────────────────────────────────────────── */
+@import "tailwindcss";
+
+/* ─── Design Tokens ─────────────────────────────────────────────────────────── */
+@theme {
+  --color-midnight: #0a0812;
+  --color-deep:     #110d1f;
+  --color-forest:   #0d1a12;
+  --color-gold:     #c9a96e;
+  --color-gold-light: #e8d5a3;
+  --color-rose:     #c4849a;
+  --color-rose-light: #e8c4d0;
+  --color-cream:    #faf6f0;
+
+  --font-cormorant: "Cormorant Garamond", Georgia, serif;
+  --font-vibes:     "Great Vibes", cursive;
+  --font-montserrat: "Montserrat", sans-serif;
+}
+
+/* rgba values not supported in @theme — kept in :root for custom CSS usage */
+:root {
+  --color-white-soft: rgba(255, 255, 255, 0.85);
+  --color-white-dim:  rgba(255, 255, 255, 0.45);
+}
+
+/* ─── Global Base ───────────────────────────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #0a0812;
+  color: #faf6f0;
+  font-family: "Montserrat", sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── Keyframe Animations ───────────────────────────────────────────────────── */
+@keyframes firefly-float {
+  0%   { opacity: 0;   transform: translateY(0)      translateX(0); }
+  15%  { opacity: 1; }
+  85%  { opacity: 0.7; }
+  100% { opacity: 0;   transform: translateY(-110px) translateX(var(--drift, 20px)); }
+}
+
+@keyframes firefly-glow {
+  0%, 100% { box-shadow: 0 0 4px 1px rgba(232, 213, 163, 0.6); }
+  50%       { box-shadow: 0 0 10px 3px rgba(232, 213, 163, 1); }
+}
+
+@keyframes bounce-arrow {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(9px); }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slow-float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-10px); }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes shimmer-gold {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+
+/* ─── Component classes ─────────────────────────────────────────────────────── */
+/* Placed in @layer components so Tailwind utilities always override these defaults */
+@layer components {
+
+/* Firefly Particles */
+.firefly {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #e8d5a3;
+  pointer-events: none;
+  will-change: transform, opacity;
+  animation:
+    firefly-float var(--duration, 5s) ease-in-out var(--delay, 0s) infinite,
+    firefly-glow  var(--glow-dur, 2s) ease-in-out var(--delay, 0s) infinite alternate;
+}
+
+/* ─── Text Effects ──────────────────────────────────────────────────────────── */
+.gold-glow-text {
+  text-shadow:
+    0 0 30px rgba(201, 169, 110, 0.55),
+    0 0 70px rgba(201, 169, 110, 0.25),
+    0 0 120px rgba(201, 169, 110, 0.1);
+}
+
+.section-title {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 300;
+  letter-spacing: 0.04em;
+  color: #faf6f0;
+  text-align: center;
+}
+
+.section-divider {
+  display: block;
+  width: 56px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #c9a96e, transparent);
+  margin: 1rem auto 0;
+}
+
+/* ─── Category Cards ────────────────────────────────────────────────────────── */
+.category-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(201, 169, 110, 0.12);
+  transition: border-color 0.35s ease, box-shadow 0.35s ease, transform 0.35s ease, background 0.35s ease;
+  cursor: pointer;
+}
+
+.category-card:hover {
+  border-color: rgba(201, 169, 110, 0.55);
+  box-shadow: 0 0 24px rgba(201, 169, 110, 0.14), 0 0 48px rgba(201, 169, 110, 0.06);
+  transform: translateY(-5px);
+  background: rgba(201, 169, 110, 0.05);
+}
+
+/* ─── Template Cards ────────────────────────────────────────────────────────── */
+.template-card {
+  transition: box-shadow 0.35s ease, transform 0.35s ease;
+}
+
+.template-card:hover {
+  box-shadow: 0 8px 40px rgba(201, 169, 110, 0.25), 0 0 0 1px rgba(201, 169, 110, 0.35);
+  transform: translateY(-4px) scale(1.02);
+}
+
+.template-overlay {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  background: linear-gradient(to top, rgba(10, 8, 18, 0.9) 0%, rgba(10, 8, 18, 0.3) 60%, transparent 100%);
+}
+
+.template-card:hover .template-overlay {
+  opacity: 1;
+}
+
+/* ─── Buttons ───────────────────────────────────────────────────────────────── */
+.btn-gold-outline {
+  display: inline-block;
+  border: 1px solid #c9a96e;
+  color: #c9a96e;
+  padding: 0.75rem 2rem;
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  background: transparent;
+}
+
+.btn-gold-outline:hover {
+  background: #c9a96e;
+  color: #0a0812;
+  box-shadow: 0 0 24px rgba(201, 169, 110, 0.4);
+}
+
+.btn-gold-solid {
+  display: inline-block;
+  background: linear-gradient(135deg, #c9a96e 0%, #e8d5a3 50%, #c9a96e 100%);
+  background-size: 200% auto;
+  color: #0a0812;
+  padding: 1rem 3rem;
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background-position 0.5s ease, box-shadow 0.3s ease, transform 0.3s ease;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-gold-solid:hover {
+  background-position: right center;
+  box-shadow: 0 0 40px rgba(201, 169, 110, 0.5), 0 0 80px rgba(201, 169, 110, 0.2);
+  transform: translateY(-2px);
+}
+
+/* ─── Testimonial Cards ─────────────────────────────────────────────────────── */
+.testimonial-card {
+  border: 1px solid rgba(201, 169, 110, 0.15);
+  background: rgba(255, 255, 255, 0.025);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.testimonial-card:hover {
+  border-color: rgba(201, 169, 110, 0.35);
+  box-shadow: 0 0 30px rgba(201, 169, 110, 0.08);
+}
+
+/* ─── Navbar ────────────────────────────────────────────────────────────────── */
+.navbar-scrolled {
+  background: rgba(10, 8, 18, 0.96) !important;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 1px 0 rgba(201, 169, 110, 0.1);
+}
+
+/* ─── Decorative SVG Corners ────────────────────────────────────────────────── */
+.corner-decor {
+  position: absolute;
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+/* ─── Scroll Fade-up Helper ─────────────────────────────────────────────────── */
+.in-view {
+  animation: fade-up 0.7s ease forwards;
+}
+
+/* ─── Hide scrollbar (filter bar mobile scroll) ─────────────────────────────── */
+.hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* ─── Form Inputs ───────────────────────────────────────────────────────────── */
+.nouivo-input {
+  display: block;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(201, 169, 110, 0.2);
+  color: #faf6f0;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 1.05rem;
+  font-weight: 300;
+  outline: none;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+  border-radius: 0;
+  -webkit-appearance: none;
+}
+
+.nouivo-input:focus {
+  border-color: rgba(201, 169, 110, 0.65);
+  background: rgba(255, 255, 255, 0.065);
+  box-shadow: 0 0 0 3px rgba(201, 169, 110, 0.08);
+}
+
+.nouivo-input::placeholder {
+  color: rgba(250, 246, 240, 0.22);
+  font-style: italic;
+  font-size: 0.95rem;
+}
+
+.nouivo-input.error {
+  border-color: rgba(220, 80, 80, 0.55);
+  background: rgba(220, 80, 80, 0.04);
+}
+
+.nouivo-input.error:focus {
+  box-shadow: 0 0 0 3px rgba(220, 80, 80, 0.08);
+}
+
+} /* end @layer components */
